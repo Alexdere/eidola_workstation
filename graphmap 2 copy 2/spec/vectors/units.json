@@ -1,0 +1,38 @@
+{
+  "@": "vectors/units/1",
+  "primitives": {
+    "core.const": "unit:ed53823b7a3b38ca99887987ada3dabfa699426ea56bd5e0355337c3960e09d6",
+    "core.add": "unit:b76f2427595b34833081b1e1351f7ef8361d15ca8984639397f3e28d84840134",
+    "core.sub": "unit:7d3be1c36dd9b29d7dddf4e71ddd8e55e6f9fe686bfeb7477d65a4200f0e5d4b",
+    "core.mul": "unit:8a239540b2fe013a392746fe8350e05ecb50e2fb6d024c3da6c228751e9e5481",
+    "core.neg": "unit:0f3c0bb4520e2811f399bab6f1b535ae44109f0bf60c11d6afe85e2ee57f0e15",
+    "core.gt": "unit:675bc7b07ab4a23436ce3064323da735a8ed6a67b58ed6cfe5716f65b08d507a",
+    "core.eq": "unit:0b3193cc2108438cb591193ffc0e22143aee99d042b9be1e48d7affbd1f12dd9",
+    "core.not": "unit:46cac920f19c5c9dacf433c47282c11e7ee8b4f78e8ed24fbe3a4b3e97297469",
+    "core.and": "unit:fe55a91e9512fcd5162cd36fceeaaa81463fc6370c60279ec77bb71b30be4c11",
+    "core.or": "unit:209a835cfe44111bcf5e255c282540ece64f968d425da261d1845920d27b500c",
+    "core.if": "unit:54d0a3732a3a9a24351e5c27c1c4bc90daddd4ea6061bc5491588db72e1787d9",
+    "core.concat": "unit:d9fa76ee5b05d9cccb7677a212a8effa7dca53554d82d1cd5299130ffb33efbb",
+    "core.list2": "unit:1028a287b6cd198a1f799f4fe3c3bd74fa8953da1eb13f33d21726f3580a5f0d",
+    "core.source": "unit:b4c03732652f1fd9472eac39daee801f414d9b9ca341f64e1f3d168771e25ae9",
+    "core.delay": "unit:d4886d3540d382e9f76b54ee0ce9954c9d7286770fa62a066fc00dc5e0e210e6",
+    "core.sum": "unit:46dd53bc993012c4d8a67bb5dbdeb648beaf69dd44a29457d1ca60b398d967bc",
+    "core.print": "unit:ad4950f00fca430d626f89b2f6652a7fc32a8e1018817814cca6d9b4f09b3c12",
+    "core.lt": "unit:61fabbb36f1bb224c6adff62ebbc03617ac0496efd6c99318c69c9483e468802",
+    "core.abs": "unit:3abe821dc7cef91509f7fa373e5e127eb5de9ec718e1cb5c13fef28addd4aee4",
+    "core.min": "unit:b28989801f0d77ea4fe249ba46f83bdb4ff6953b7af3ffa77f0c8de8cffa2798",
+    "core.max": "unit:33fe2d6350243791e2a45aee9fe452dcdcc34dd8c1fab79fac9addab7e73a4e4",
+    "core.floor": "unit:abada8807b6304a67101a8f86dabfed09c821bc2c47278ddaa2ef3099deda0cb",
+    "core.len": "unit:c887170bfdce1b0e57a7ffcfe39ea8c030740993310efd66ac23e51d7d415129",
+    "core.at": "unit:d2a4bd62df8772d0c287017fe97f31dcd62861a4b521effd92791e6e1cdd62a5",
+    "core.append": "unit:71d1d364dfb8bfdacaaf9af7696b1931d0e63dc3d3c11472b3bad68093f5d307",
+    "core.hist": "unit:4646a63e0b1bd3068b54d7b50f8b862ee45cb52d90ceff4c2203e4cfd27b4252"
+  },
+  "gauge": {
+    "note": "the same graph with its wires in two orders",
+    "hashes": [
+      "f0fe229f1acb1203f815f22f1b752e3b50996d707f9ffecde4cb4737daa67188",
+      "f0fe229f1acb1203f815f22f1b752e3b50996d707f9ffecde4cb4737daa67188"
+    ]
+  }
+}

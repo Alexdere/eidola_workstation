@@ -1,0 +1,18 @@
+{
+  "name": "@graphmap/core",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The T0 kernel: eight laws, in the tab.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "vectors": "tsx tools/gen-vectors.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "tsx": "^4.19.0"
+  }
+}

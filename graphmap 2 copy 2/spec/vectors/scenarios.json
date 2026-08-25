@@ -1,0 +1,570 @@
+{
+  "@": "vectors/scenarios/1",
+  "scenarios": [
+    {
+      "name": "const-add",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "k": {
+            "prim": "core.const"
+          },
+          "add": {
+            "prim": "core.add"
+          }
+        },
+        "root": {
+          "panes": {
+            "a": {
+              "unit": "k",
+              "config": {
+                "d": "4000000000000000"
+              }
+            },
+            "b": {
+              "unit": "k",
+              "config": {
+                "d": "4044000000000000"
+              }
+            },
+            "s": {
+              "unit": "add",
+              "pinned": true
+            }
+          },
+          "wires": [
+            [
+              [
+                "a",
+                "out"
+              ],
+              [
+                "s",
+                "a"
+              ]
+            ],
+            [
+              [
+                "b",
+                "out"
+              ],
+              [
+                "s",
+                "b"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {},
+        {}
+      ]
+    },
+    {
+      "name": "three-level-nesting",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "k": {
+            "prim": "core.const"
+          },
+          "add": {
+            "prim": "core.add"
+          },
+          "inner": {
+            "container": {
+              "ports": [
+                [
+                  "a",
+                  "in",
+                  "num",
+                  null
+                ],
+                [
+                  "b",
+                  "in",
+                  "num",
+                  null
+                ],
+                [
+                  "s",
+                  "out",
+                  "num",
+                  null
+                ]
+              ],
+              "graph": {
+                "panes": {
+                  "add": {
+                    "unit": "add"
+                  }
+                },
+                "wires": [
+                  [
+                    [
+                      "@in",
+                      "a"
+                    ],
+                    [
+                      "add",
+                      "a"
+                    ]
+                  ],
+                  [
+                    [
+                      "@in",
+                      "b"
+                    ],
+                    [
+                      "add",
+                      "b"
+                    ]
+                  ],
+                  [
+                    [
+                      "add",
+                      "out"
+                    ],
+                    [
+                      "@out",
+                      "s"
+                    ]
+                  ]
+                ]
+              }
+            }
+          },
+          "mid": {
+            "container": {
+              "ports": [
+                [
+                  "x",
+                  "in",
+                  "num",
+                  null
+                ],
+                [
+                  "y",
+                  "in",
+                  "num",
+                  null
+                ],
+                [
+                  "z",
+                  "out",
+                  "num",
+                  null
+                ]
+              ],
+              "graph": {
+                "panes": {
+                  "inner": {
+                    "unit": "inner"
+                  }
+                },
+                "wires": [
+                  [
+                    [
+                      "@in",
+                      "x"
+                    ],
+                    [
+                      "inner",
+                      "a"
+                    ]
+                  ],
+                  [
+                    [
+                      "@in",
+                      "y"
+                    ],
+                    [
+                      "inner",
+                      "b"
+                    ]
+                  ],
+                  [
+                    [
+                      "inner",
+                      "s"
+                    ],
+                    [
+                      "@out",
+                      "z"
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "root": {
+          "panes": {
+            "c2": {
+              "unit": "k",
+              "config": {
+                "d": "4000000000000000"
+              }
+            },
+            "c3": {
+              "unit": "k",
+              "config": {
+                "d": "4008000000000000"
+              }
+            },
+            "m": {
+              "unit": "mid"
+            }
+          },
+          "wires": [
+            [
+              [
+                "c2",
+                "out"
+              ],
+              [
+                "m",
+                "x"
+              ]
+            ],
+            [
+              [
+                "c3",
+                "out"
+              ],
+              [
+                "m",
+                "y"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {
+          "observed": [
+            "m"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "counter-through-delay",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "k": {
+            "prim": "core.const"
+          },
+          "add": {
+            "prim": "core.add"
+          },
+          "d": {
+            "prim": "core.delay"
+          }
+        },
+        "root": {
+          "panes": {
+            "one": {
+              "unit": "k",
+              "config": {
+                "d": "3ff0000000000000"
+              }
+            },
+            "s": {
+              "unit": "add",
+              "pinned": true
+            },
+            "d": {
+              "unit": "d",
+              "mem": "c",
+              "config": {
+                "d": "0000000000000000"
+              }
+            }
+          },
+          "wires": [
+            [
+              [
+                "one",
+                "out"
+              ],
+              [
+                "s",
+                "b"
+              ]
+            ],
+            [
+              [
+                "d",
+                "out"
+              ],
+              [
+                "s",
+                "a"
+              ]
+            ],
+            [
+              [
+                "s",
+                "out"
+              ],
+              [
+                "d",
+                "x"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {},
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "name": "source-running-sum",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "src": {
+            "prim": "core.source"
+          },
+          "sum": {
+            "prim": "core.sum"
+          },
+          "pr": {
+            "prim": "core.print"
+          }
+        },
+        "root": {
+          "panes": {
+            "s": {
+              "unit": "src"
+            },
+            "acc": {
+              "unit": "sum",
+              "mem": "acc",
+              "config": {
+                "d": "0000000000000000"
+              },
+              "pinned": true
+            },
+            "p": {
+              "unit": "pr",
+              "pinned": true
+            }
+          },
+          "wires": [
+            [
+              [
+                "s",
+                "out"
+              ],
+              [
+                "acc",
+                "x"
+              ]
+            ],
+            [
+              [
+                "acc",
+                "out"
+              ],
+              [
+                "p",
+                "x"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {
+          "journal": {
+            "s#out": {
+              "d": "3ff0000000000000"
+            }
+          }
+        },
+        {
+          "journal": {
+            "s#out": {
+              "d": "4000000000000000"
+            }
+          }
+        },
+        {
+          "journal": {
+            "s#out": {
+              "d": "4008000000000000"
+            }
+          }
+        },
+        {
+          "journal": {
+            "s#out": {
+              "d": "0000000000000000"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "memo-two-panes-one-node",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "k": {
+            "prim": "core.const"
+          },
+          "neg": {
+            "prim": "core.neg"
+          }
+        },
+        "root": {
+          "panes": {
+            "c": {
+              "unit": "k",
+              "config": {
+                "d": "4014000000000000"
+              }
+            },
+            "n1": {
+              "unit": "neg",
+              "pinned": true
+            },
+            "n2": {
+              "unit": "neg",
+              "pinned": true
+            }
+          },
+          "wires": [
+            [
+              [
+                "c",
+                "out"
+              ],
+              [
+                "n1",
+                "a"
+              ]
+            ],
+            [
+              [
+                "c",
+                "out"
+              ],
+              [
+                "n2",
+                "a"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {}
+      ]
+    },
+    {
+      "name": "frame-conversion",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "kc": {
+            "prim": "core.const",
+            "frames": {
+              "out": "temp.c"
+            }
+          },
+          "nf": {
+            "prim": "core.neg",
+            "frames": {
+              "a": "temp.f"
+            }
+          }
+        },
+        "root": {
+          "panes": {
+            "c": {
+              "unit": "kc",
+              "config": {
+                "d": "4059000000000000"
+              }
+            },
+            "n": {
+              "unit": "nf",
+              "pinned": true
+            }
+          },
+          "wires": [
+            [
+              [
+                "c",
+                "out"
+              ],
+              [
+                "n",
+                "a"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {}
+      ]
+    },
+    {
+      "name": "demand-nothing-observed",
+      "workspace": {
+        "@": "workspace/1",
+        "units": {
+          "k": {
+            "prim": "core.const"
+          },
+          "neg": {
+            "prim": "core.neg"
+          }
+        },
+        "root": {
+          "panes": {
+            "c": {
+              "unit": "k",
+              "config": {
+                "d": "4008000000000000"
+              }
+            },
+            "n": {
+              "unit": "neg"
+            }
+          },
+          "wires": [
+            [
+              [
+                "c",
+                "out"
+              ],
+              [
+                "n",
+                "a"
+              ]
+            ]
+          ]
+        }
+      },
+      "log": [
+        {},
+        {
+          "observed": [
+            "n"
+          ]
+        }
+      ]
+    }
+  ]
+}

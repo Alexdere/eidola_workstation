@@ -1,0 +1,233 @@
+<title>Eidola Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ── tokens ────────────────────────────────────────────────────────────────
+   The palette is graphmap's own: ocean, land, border-orange, paper. Neutrals
+   are biased toward the ocean hue rather than pure grey.                     */
+:root {
+  --ocean:#44515B; --land:#6F8492; --orange:#D57A32; --paper:#E8EDF2;
+
+  --bg:#EDF1F5;  --bg-grid:#D3DBE3;  --surface:#FFFFFF;  --surface-2:#F5F8FA;
+  --line:#C6D0DA; --line-soft:#DCE3EA;
+  --ink:#28313A;  --ink-2:#55636F;   --ink-3:#8394A1;
+  --accent:#B0601C; --accent-soft:#F7E7D6;
+  --ok:#5E7F43;   --no:#A63B32;
+  --cls-pure:#6F8492; --cls-source:#C06A22; --cls-delay:#6C619B;
+  --cls-effect:#A63B32; --cls-container:#3F7F6E;
+  --shadow:0 1px 2px rgba(40,49,58,.08), 0 6px 18px rgba(40,49,58,.07);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#1E252B; --bg-grid:#2B343C; --surface:#2A333B; --surface-2:#232B32;
+    --line:#3C4852; --line-soft:#333E47;
+    --ink:#E3EAF0; --ink-2:#A9B8C4; --ink-3:#788997;
+    --accent:#EFA267; --accent-soft:#3A2C1B;
+    --ok:#8FB56A;  --no:#DE7A70;
+    --cls-pure:#8296A4; --cls-source:#E29054; --cls-delay:#9187C4;
+    --cls-effect:#DE7A70; --cls-container:#5AA894;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.28);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#1E252B; --bg-grid:#2B343C; --surface:#2A333B; --surface-2:#232B32;
+  --line:#3C4852; --line-soft:#333E47;
+  --ink:#E3EAF0; --ink-2:#A9B8C4; --ink-3:#788997;
+  --accent:#EFA267; --accent-soft:#3A2C1B;
+  --ok:#8FB56A;  --no:#DE7A70;
+  --cls-pure:#8296A4; --cls-source:#E29054; --cls-delay:#9187C4;
+  --cls-effect:#DE7A70; --cls-container:#5AA894;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 20px rgba(0,0,0,.28);
+}
+
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size:13px; line-height:1.45;
+  height:100vh; overflow:hidden;
+  display:grid; grid-template-rows:auto auto 1fr;
+}
+code, .mono, input, button { font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+button {
+  font-size:11.5px; color:var(--ink); background:var(--surface);
+  border:1px solid var(--line); border-radius:4px; padding:4px 9px; cursor:pointer;
+}
+button:hover { border-color:var(--ink-3); }
+button:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+input {
+  font-size:11.5px; color:var(--ink); background:var(--surface-2);
+  border:1px solid var(--line); border-radius:3px; padding:3px 6px; width:100%;
+}
+
+/* ── bar ─────────────────────────────────────────────────────────────────── */
+#bar {
+  display:flex; align-items:center; gap:14px; padding:8px 12px;
+  background:var(--surface); border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.grp { display:flex; align-items:center; gap:5px; }
+.grp.right { margin-left:auto; }
+.tickno { font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); padding-left:4px; }
+
+/* the thesis object: this string is what must NOT move when you drag a pane */
+.hashbox {
+  display:flex; align-items:baseline; gap:9px;
+  padding:4px 11px; border:1px solid var(--line); border-radius:4px;
+  background:var(--surface-2); transition:background .5s, border-color .5s;
+}
+.hashbox.flash { background:var(--accent-soft); border-color:var(--accent); }
+.hashbox.flash .hlabel, .hashbox.flash .gauge { color:var(--accent); }
+.hashbox.flash code { color:var(--ink); }
+.hashbox.liminal { border-style:dashed; }
+.hlabel { font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); }
+.hashbox code { font-size:11.5px; color:var(--ink); font-variant-numeric:tabular-nums; }
+.gauge { font-size:10.5px; color:var(--ink-3); }
+.msg { flex-basis:100%; font-size:11.5px; min-height:16px; font-family:"IBM Plex Mono",monospace; }
+.msg.ok { color:var(--ink-3); }
+.msg.no { color:var(--no); }
+
+/* ── breadcrumb ──────────────────────────────────────────────────────────── */
+#crumb {
+  display:flex; align-items:center; gap:7px; padding:5px 12px;
+  background:var(--surface-2); border-bottom:1px solid var(--line-soft);
+  font-size:11.5px; color:var(--ink-3);
+}
+#crumb .here { color:var(--ink); font-weight:500; }
+#crumb .sep { color:var(--ink-3); }
+#crumb button { margin-left:8px; border-color:var(--accent); color:var(--accent); }
+
+/* ── frame ───────────────────────────────────────────────────────────────── */
+#frame { display:grid; grid-template-columns:150px 1fr 244px; min-height:0; }
+#rail, #side {
+  overflow:auto; background:var(--surface-2); display:flex; flex-direction:column;
+}
+#rail { border-right:1px solid var(--line); }
+#side { border-left:1px solid var(--line); }
+h4 {
+  margin:0; padding:10px 10px 4px; font-size:9.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3);
+}
+.palrow { display:flex; flex-wrap:wrap; gap:3px; padding:0 8px 6px; }
+button.pal { padding:3px 7px; font-size:11px; background:var(--surface); }
+button.pal.own { border-color:var(--cls-container); color:var(--cls-container); }
+
+/* ── canvas ──────────────────────────────────────────────────────────────── */
+#canvas {
+  position:relative; overflow:auto; background:var(--bg);
+  background-image:radial-gradient(var(--bg-grid) 1px, transparent 1px);
+  background-size:22px 22px;
+}
+#wires { position:absolute; inset:0; width:3600px; height:2400px; pointer-events:none; }
+#panes { position:absolute; inset:0; width:3600px; height:2400px; }
+path.wire {
+  fill:none; stroke:var(--land); stroke-width:2; stroke-linecap:round;
+  pointer-events:stroke; cursor:pointer;
+}
+path.wire:hover { stroke:var(--ink-2); }
+path.wire.sel { stroke:var(--accent); stroke-width:3; }
+path.wire.ghost { stroke:var(--accent); stroke-dasharray:4 4; pointer-events:none; }
+path.wire.boundary { stroke-dasharray:3 5; opacity:.8; }
+text.btag { fill:var(--ink-3); font:500 9.5px "IBM Plex Mono",monospace; }
+
+/* ── pane ────────────────────────────────────────────────────────────────── */
+.pane {
+  position:absolute; background:var(--surface); border:1px solid var(--line);
+  border-radius:5px; box-shadow:var(--shadow); user-select:none; cursor:grab;
+  border-left:3px solid var(--cls-pure);
+}
+.pane.cls-source    { border-left-color:var(--cls-source); }
+.pane.cls-delay     { border-left-color:var(--cls-delay); }
+.pane.cls-effect    { border-left-color:var(--cls-effect); }
+.pane.cls-container { border-left-color:var(--cls-container); }
+.pane.sel { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft), var(--shadow); }
+.pane.ran .ttl::after {
+  content:""; display:inline-block; width:5px; height:5px; border-radius:50%;
+  background:var(--ok); margin-left:6px; vertical-align:middle;
+}
+.pane .head {
+  display:flex; align-items:center; justify-content:space-between;
+  height:26px; padding:0 7px; border-bottom:1px solid var(--line-soft);
+}
+.ttl { font-size:11.5px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.badges { display:flex; gap:4px; align-items:center; }
+.badge {
+  font-size:9px; letter-spacing:.06em; padding:0 4px; border-radius:3px;
+  color:var(--ink-3); border:1px solid var(--line);
+}
+.badge.pin { color:var(--accent); border-color:var(--accent); }
+.badge.fold { cursor:pointer; padding:0 5px; }
+.pane .row { position:relative; display:flex; align-items:center; height:20px; padding:0 8px; gap:4px; }
+.pname { font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); }
+.pname.out { margin-left:auto; display:flex; gap:6px; align-items:baseline; }
+.pname.out b {
+  font-weight:500; color:var(--ink); max-width:96px; overflow:hidden;
+  text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums;
+}
+.dot {
+  position:absolute; width:9px; height:9px; border-radius:50%;
+  background:var(--surface); border:2px solid var(--land); cursor:crosshair;
+}
+.dot.in  { left:-5px; }
+.dot.out { right:-5px; }
+.dot:hover { border-color:var(--accent); transform:scale(1.25); }
+.dot.sh-num  { border-color:var(--cls-pure); }
+.dot.sh-bool { border-color:var(--cls-delay); }
+.dot.sh-str  { border-color:var(--cls-container); }
+.dot.sh-list { border-color:var(--cls-source); }
+.dot.sh-any  { border-color:var(--ink-3); }
+.pane .foot { padding:4px 8px 6px; border-top:1px solid var(--line-soft); min-height:26px; }
+.hint { font-size:10px; color:var(--ink-3); }
+.wid { font-size:11px; }
+button.wid { width:100%; }
+.pane.collapsed .head { border-bottom:none; }
+
+/* ── inspector ───────────────────────────────────────────────────────────── */
+#inspector { padding:8px 10px 14px; display:flex; flex-direction:column; gap:6px; }
+.irow { display:flex; align-items:center; gap:8px; justify-content:space-between; font-size:11px; }
+.irow > span:first-child { color:var(--ink-3); white-space:nowrap; }
+.irow code { font-size:10.5px; color:var(--ink-2); }
+.irow input[type=checkbox] { width:auto; }
+.ihint { font-size:10.5px; color:var(--ink-3); line-height:1.5; padding-top:4px; }
+#side h4 + #inspector { padding-top:0; }
+#log {
+  border-top:1px solid var(--line); padding:6px 10px; overflow:auto;
+  max-height:34%; font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-2);
+}
+.logline { padding:1px 0; border-bottom:1px solid var(--line-soft); }
+#filebox { padding:0 10px 10px; display:flex; flex-direction:column; gap:6px; }
+.frow { display:flex; gap:5px; }
+#filetext {
+  width:100%; height:96px; resize:vertical; font-family:"IBM Plex Mono",monospace;
+  font-size:10px; line-height:1.4; color:var(--ink); background:var(--surface-2);
+  border:1px solid var(--line); border-radius:3px; padding:5px;
+}
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+
+<div id="bar"></div>
+<div id="crumb"></div>
+<div id="frame">
+  <div id="rail">
+    <h4>units</h4>
+    <div id="palette"></div>
+  </div>
+  <div id="canvas">
+    <svg id="wires"></svg>
+    <div id="panes"></div>
+  </div>
+  <div id="side">
+    <h4>pane</h4>
+    <div id="inspector"></div>
+    <h4>effects</h4>
+    <div id="log"></div>
+    <h4>workspace file</h4>
+    <div id="filebox">
+      <div class="frow"><button id="b-dump">dump</button><button id="b-loadtext">load</button></div>
+      <textarea id="filetext" spellcheck="false" placeholder="WORKSPACE/1 — dump it here, or paste one in and load"></textarea>
+    </div>
+  </div>
+</div>
+<script>/*APP*/</script>

@@ -1,0 +1,274 @@
+{
+  "@": "vectors/canon/1",
+  "note": "value described as VSPEC; enc = canonical bytes as hex; hash = H(value)",
+  "cases": [
+    {
+      "name": "null",
+      "value": {
+        "n": null
+      },
+      "enc": "7a",
+      "hash": "8d82f473f86732311854af501fd619a8c275753071d10950258bc4cccdede478"
+    },
+    {
+      "name": "true",
+      "value": {
+        "b": true
+      },
+      "enc": "74",
+      "hash": "406fddfb537939d6eade330c1651c3923107e84098d208787a8416e957157c3d"
+    },
+    {
+      "name": "false",
+      "value": {
+        "b": false
+      },
+      "enc": "66",
+      "hash": "d54193b8a4a89ed6c14af8a5fc034a1561c788c5c72d5a1bcfde235cbb7e84ac"
+    },
+    {
+      "name": "zero",
+      "value": {
+        "d": "0000000000000000"
+      },
+      "enc": "640000000000000000",
+      "hash": "1972958930a40a55dd7096815f2f80b467abab1243cb5a2b346652713037b2a0"
+    },
+    {
+      "name": "neg-zero",
+      "value": {
+        "d": "0000000000000000"
+      },
+      "enc": "640000000000000000",
+      "hash": "1972958930a40a55dd7096815f2f80b467abab1243cb5a2b346652713037b2a0"
+    },
+    {
+      "name": "one",
+      "value": {
+        "d": "3ff0000000000000"
+      },
+      "enc": "643ff0000000000000",
+      "hash": "4a05d75beae92f64cd0bc81e14d577b65a0214ddcdf1da371778cff7db3b26a0"
+    },
+    {
+      "name": "one-point-five",
+      "value": {
+        "d": "3ff8000000000000"
+      },
+      "enc": "643ff8000000000000",
+      "hash": "de31b26e11bf6ffe954cddea3ed7fc25353c59afa7f28928a1f4e36088228ff1"
+    },
+    {
+      "name": "nan",
+      "value": {
+        "d": "7ff8000000000000"
+      },
+      "enc": "647ff8000000000000",
+      "hash": "9278036d6c0abe1dfefb54164b89801df677589dbb24a21b2ac088dc78b1ec0e"
+    },
+    {
+      "name": "inf",
+      "value": {
+        "d": "7ff0000000000000"
+      },
+      "enc": "647ff0000000000000",
+      "hash": "1eb3e769acadb766e3c60e184386b6a80ef081285f889c6f6f7b78e438937933"
+    },
+    {
+      "name": "neg-inf",
+      "value": {
+        "d": "fff0000000000000"
+      },
+      "enc": "64fff0000000000000",
+      "hash": "bb5ee1ed906bf3773f3d82592958dd93953a2f6b4027a965db111a8e46278a23"
+    },
+    {
+      "name": "max-safe-int",
+      "value": {
+        "d": "433fffffffffffff"
+      },
+      "enc": "64433fffffffffffff",
+      "hash": "dc74c6e421a6754d2edf62b1a33314d932bdac2d8c15f10e059f4f1b582c7cd2"
+    },
+    {
+      "name": "min-safe-int",
+      "value": {
+        "d": "c33fffffffffffff"
+      },
+      "enc": "64c33fffffffffffff",
+      "hash": "5e2aeb978483da77b53153fa96ecf27d8ee48d9cb404b6bdb41d8532f7b62f4d"
+    },
+    {
+      "name": "empty-string",
+      "value": {
+        "s": ""
+      },
+      "enc": "73303a",
+      "hash": "27ccf4e49c8720a0378739b80dec160d16bc27fe9deaa00158a984519091dbab"
+    },
+    {
+      "name": "ascii",
+      "value": {
+        "s": "hello"
+      },
+      "enc": "73353a68656c6c6f",
+      "hash": "f7644d4cd83d83f0c35e8c546e7f89cfea0900655f8c20cf27adace55774341c"
+    },
+    {
+      "name": "astral",
+      "value": {
+        "s": "𝐀😀"
+      },
+      "enc": "73383af09d9080f09f9880",
+      "hash": "d0d2da42dd337fb88a6d2f8fcaa40aa6d29509f9c6f57e59fc49fcbfa713053d"
+    },
+    {
+      "name": "combining",
+      "value": {
+        "s": "é"
+      },
+      "enc": "73333a65cc81",
+      "hash": "5a648ef5f950884d0e85376039e620bcd06b730ad205c48b7bcde9604e3041fe"
+    },
+    {
+      "name": "empty-bytes",
+      "value": {
+        "x": ""
+      },
+      "enc": "78303a",
+      "hash": "fc992ccecb3299c41e55ae1dbbae3a0e85798d45bc69ff95b71b26a1a4e28e76"
+    },
+    {
+      "name": "bytes",
+      "value": {
+        "x": "0001feff"
+      },
+      "enc": "78343a0001feff",
+      "hash": "450b94e9bd42d0b1f4fe3c4573393780d2f9195bf710de09f9f07d24ade05fdc"
+    },
+    {
+      "name": "empty-list",
+      "value": {
+        "l": []
+      },
+      "enc": "6c303b",
+      "hash": "7b92b168a787ae154b19ca1e18562f66f7c38fb6f97dededd06fd8cdba227866"
+    },
+    {
+      "name": "nested-list",
+      "value": {
+        "l": [
+          {
+            "d": "3ff0000000000000"
+          },
+          {
+            "l": [
+              {
+                "d": "4000000000000000"
+              },
+              {
+                "l": [
+                  {
+                    "d": "4008000000000000"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "enc": "6c323b643ff00000000000006c323b6440000000000000006c313b644008000000000000",
+      "hash": "e273ffacb83acdadd28f57493752ad7462825e24cd2cc5148e0a488bb3f5a436"
+    },
+    {
+      "name": "empty-map",
+      "value": {
+        "m": {}
+      },
+      "enc": "6d303b",
+      "hash": "a85b82f2568b063c4cb8a233add33d632ae9f3a0655785b43a9a9d2eae3b013c"
+    },
+    {
+      "name": "map",
+      "value": {
+        "m": {
+          "a": {
+            "d": "3ff0000000000000"
+          },
+          "b": {
+            "l": [
+              {
+                "b": true
+              },
+              {
+                "n": null
+              }
+            ]
+          }
+        }
+      },
+      "enc": "6d323b6b313a61643ff00000000000006b313a626c323b747a",
+      "hash": "ad57e1bec0f7207cfef10a401678a70b8c1c03f6fa9cae3a8638249642f7d003"
+    },
+    {
+      "name": "map-key-order-utf8",
+      "value": {
+        "m": {
+          "𝐀": {
+            "d": "4000000000000000"
+          },
+          "Ｚ": {
+            "d": "3ff0000000000000"
+          }
+        }
+      },
+      "enc": "6d323b6b333aefbcba643ff00000000000006b343af09d9080644000000000000000",
+      "hash": "c52674a287ac904f5b5b648cb443a065b47a700f0407cb9ee6ec310d07af0d73"
+    },
+    {
+      "name": "map-key-order-utf8-reversed",
+      "value": {
+        "m": {
+          "Ｚ": {
+            "d": "3ff0000000000000"
+          },
+          "𝐀": {
+            "d": "4000000000000000"
+          }
+        }
+      },
+      "enc": "6d323b6b333aefbcba643ff00000000000006b343af09d9080644000000000000000",
+      "hash": "c52674a287ac904f5b5b648cb443a065b47a700f0407cb9ee6ec310d07af0d73"
+    },
+    {
+      "name": "deep",
+      "value": {
+        "m": {
+          "a": {
+            "m": {
+              "b": {
+                "m": {
+                  "c": {
+                    "l": [
+                      {
+                        "d": "3ff0000000000000"
+                      },
+                      {
+                        "s": "x"
+                      },
+                      {
+                        "x": "07"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "enc": "6d313b6b313a616d313b6b313a626d313b6b313a636c333b643ff000000000000073313a7878313a07",
+      "hash": "f40ca127484ae7e3213d0cd1b109516d11b1defefda4f0c962aa31c575034e3d"
+    }
+  ]
+}

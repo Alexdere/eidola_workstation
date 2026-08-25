@@ -1,0 +1,700 @@
+i dag 13:55
+get situated and give an overvciew, havent been in the project for a while
+ADG — where we left off
+
+I’ve re-situated myself. The uploaded document is essentially the entire ADG brainstorming session we had: from RGB encoding all the way to the philosophical implications of replacing decompression with deterministic generation.
+
+Dokument uten navn.txt
+
+Dokument
+
+The important thing is that the project gradually stopped being “a better codec” and became a new framework for representing information.
+
+The core idea in one sentence
+
+ADG (Agnostic Data Generation) treats any file as a sequence of numbers, then replaces explicit storage with a deterministic engine that regenerates those numbers from a small set of initial conditions.
+
+Not compression in the usual sense—causal generation.
+
+The architecture
+
+This was the cleanest version we converged toward:
+
+Component
+
+	
+
+Purpose
+
+
+
+
+Seed
+
+	
+
+Initial condition (could derive from pixel position, block, file, etc.)
+
+
+
+
+Engine
+
+	
+
+Shared deterministic rule set
+
+
+
+
+Anchors
+
+	
+
+Sparse ground-truth checkpoints to prevent drift
+
+
+
+
+Index
+
+	
+
+Allows requesting any position in the sequence
+
+
+
+
+Generated output
+
+	
+
+The reconstructed data stream
+
+The engine is global. The data is local.
+
+The RGB breakthrough
+
+The first concrete step was actually conventional:
+
+A 24-bit RGB pixel becomes one normalized value between 0 and 1.
+
+v=
+16,777,215
+R⋅256
+2
++G⋅256+B
+	​
+
+
+That is not compression—it’s a reversible mapping. But it gave us a universal numeric representation for every pixel.
+
+Where the leap happened
+
+The pivotal realization was this:
+
+Instead of storing
+
+x
+1
+	​
+
+,x
+2
+	​
+
+,x
+3
+	​
+
+,…,x
+n
+	​
+
+
+store
+
+(x
+0
+	​
+
+,engine,seed,n,anchors)
+
+Then regenerate the sequence.
+
+That shifted the project away from Shannon-style entropy coding and toward state evolution.
+
+The three engine classes
+
+We kept circling around three distinct modes.
+
+Lossless engine
+
+Every value is exactly recoverable. More compute, stronger mathematical constraints.
+
+Closed-form engine
+
+Directly solve for frame 300 without iterating from frame 1. Random access becomes evaluation instead of replay.
+
+Fractal / topological engine
+
+The engine defines a geometry. Values travel through that geometry, allowing emergent structure and potentially pattern discovery.
+
+The important distinction is that lossless becomes a property of the engine, not of the codec.
+
+Anchors changed everything
+
+Originally we talked about batches of 10 or 1000 frames.
+
+The better idea was:
+
+Treat the entire video as one continuous trajectory, with sparse anchor states.
+
+So a two-hour film isn’t 216,000 independent frames—it’s one long evolution with occasional synchronization points.
+
+That also enables seeking: jump to the nearest anchor and regenerate locally.
+
+The compute slider
+
+One of the strongest concepts was that ADG has variable depth.
+
+Mode
+
+	
+
+Storage
+
+	
+
+Compute
+
+
+
+
+Consumer
+
+	
+
+Larger
+
+	
+
+Instant
+
+
+
+
+Desktop
+
+	
+
+Smaller
+
+	
+
+Seconds
+
+
+
+
+Archive
+
+	
+
+Tiny
+
+	
+
+Minutes
+
+
+
+
+Extreme
+
+	
+
+Microscopic
+
+	
+
+Hours
+
+The same logical content could exist at multiple computational depths depending on the hardware.
+
+Storage becomes a user choice rather than a fixed property.
+
+The bigger philosophical claim
+
+This is where we need to stay disciplined.
+
+We discussed the provocative idea that ADG might “rethink entropy.” That is not established.
+
+What is established as a research direction is a much narrower statement:
+
+Can deterministic generative processes become a practical alternative representation for arbitrary numerical sequences?
+
+That’s a legitimate question.
+
+A much stronger claim—such as universally exceeding Shannon limits or compressing arbitrary random data to 20,000:1—is not something we have evidence for. Shannon’s information theory is a mathematical theorem, so any ADG prototype would need to demonstrate where it fits within those limits rather than assume it overturns them.
+
+Why the prototype comes first
+
+You made a decision I think is exactly right:
+
+No paper until there’s a working product.
+
+The prototype doesn’t need to beat AV1. It only needs to answer one question convincingly:
+
+Can one deterministic engine regenerate a nontrivial numeric sequence from a dramatically smaller representation?
+
+If yes, then you have something worth formalizing. If not, the prototype will tell you why, and that’s often where the real invention happens.
+
+At the moment, ADG is best thought of as a research framework with one concrete reversible mapping (RGB→scalar) and one unproven central hypothesis: that sufficiently expressive deterministic engines can replace explicit storage for broad classes of data. That’s the frontier we reached.
+
+NTDB - The Product Dream - 2026-08-07.md
+Fil
+
+NTDB - Exploring the Space - 2026-08-07.md
+Fil
+
+NTDB - Analysis, Expansion and Test Plan - 2026-08-07.md
+Fil
+no letss see if its mergable wiht aprts of these ideas
+
+IMG_53E8AFBA-0784-4B47-82AB-CBF4E8DDE0DA.jpeg
+Rough scetch of øarger aerchitercture and its looping first teh encoder does a test batch its analyzed in engine space and the analyzer and a anew recipe is sent back to encoder for the real run
+
+IMG_95FD53B8-5D92-4CDC-94F6-15B813DCD3B8.jpeg
+Just an example its open source i have girhub for it i cousl tet to make implmentation
+
+Yes — exactly. And that adds an important operation: the 100 symbolic equations don't have to remain 100 separate symbolic objects.
+
+You can treat them as an algebraic population and try to collapse them.
+
+Suppose the symbolic layer discovers:
+
+S 
+1
+​
+ ,S 
+2
+​
+ ,…,S 
+100
+​
+ 
+Each S 
+i
+​
+  is an expression that maps to some part of the data/latent state. Instead of encoding all 100 expressions independently, we can ask:
+
+S 
+1
+​
+ +S 
+2
+​
+ +⋯+S 
+100
+​
+ 
+or products, substitutions, factorizations, common terms, etc., and see whether the collection has a much shorter joint normal form.
+
+For example, imagine the discoveries contain:
+
+x 
+2
+ +2x,3x 
+2
+ +6x,7x 
+2
+ +14x.
+Individually:
+
+(x 
+2
+ +2x)+(3x 
+2
+ +6x)+(7x 
+2
+ +14x)
+but algebraically:
+
+11(x 
+2
+ +2x)
+​
+ 
+Now you've replaced three symbolic objects with:
+
+11A
+where
+
+A=x 
+2
+ +2x.
+That's exactly the kind of higher-order object creation you've been describing.
+
+And it can recurse:
+
+S 
+1
+​
+ ,…,S 
+100
+​
+ →A 
+1
+​
+ ,…,A 
+20
+​
+ →B 
+1
+​
+ ,…,B 
+5
+​
+ →C.
+So the symbolic compression isn't merely:
+
+find an equation close to each number.
+
+It's:
+
+find equations → algebraically interact them → identify common structure → create a new symbolic object → repeat.
+
+That is considerably more powerful.
+
+In engine terms
+You could have:
+
+X 
+\*
+ 
+as the exact terminal state.
+
+The symbolic analyzer produces:
+
+S 
+1
+​
+ ,…,S 
+n
+​
+ 
+and evaluates their combined contribution:
+
+X
+^
+ =F(S 
+1
+​
+ ,…,S 
+n
+​
+ ).
+Then:
+
+R=X 
+\*
+ − 
+X
+^
+ .
+Now the compression cost is something like:
+
+L=L(symbolic vocabulary)+L(expression graph)+L(R).
+And crucially, algebraic simplification happens before the cost is measured.
+
+Because otherwise you'd miss the whole point: 100 expressions might contain 90% redundant mathematical structure.
+
+There's also a nice connection to your "space" idea.
+
+The equations don't merely have numerical values. They have relationships to each other.
+
+So you could have:
+
+                 symbolic space
+
+        x²+2x ──────────────── A
+          │                    │
+       × 3│                    │ × 11
+          ↓                    ↓
+       3x²+6x              11(x²+2x)
+          │
+          │
+       common structure
+          │
+          ▼
+       higher object
+The analyzer is therefore searching not just for individual short descriptions, but for short descriptions of relationships between descriptions.
+
+That is where this starts becoming a genuine symbolic compression framework rather than a fancy number recognizer.
+
+And yes, I would absolutely put algebraic aggregation / normalization on the experimental roadmap. It may turn out that the big gain isn't that any individual symbolic approximation is spectacular — it's that a hundred individually mediocre symbolic descriptions collapse into a very small shared algebraic structure.
+
+
+Can we make a symbolic engine from know open aource etc or is that uber hard
+
+Not uber hard if we don't try to build the whole thing from scratch. In fact, this is one of the places where open source gives us a huge head start.
+
+There are two different things, though:
+
+A symbolic expression engine — quite manageable.
+
+A system that discovers useful symbolic representations from arbitrary data and then algebraically compresses them — much harder, but we can build it incrementally.
+
+For the first version, I'd use existing open-source machinery.
+
+PySR on GitHub is probably the most interesting starting point. It's specifically designed to search for symbolic expressions and optimize them, with configurable operators and complexity. 
+
+There's also gplearn on GitHub, which is pure Python and uses genetic programming to evolve expression trees. 
+
+But we'd use it differently
+Normal symbolic regression is roughly:
+
+(x,y)→f(x)
+Find an equation that predicts y from x.
+
+What we're imagining is closer to:
+
+X 
+\*
+ →{S 
+1
+​
+ ,S 
+2
+​
+ ,…,S 
+n
+​
+ }
+Find symbolic objects that describe parts of a latent state.
+
+Then:
+
+{S 
+1
+​
+ ,…,S 
+n
+​
+ }→ 
+algebraic simplification
+​
+ →S 
+compressed
+​
+ 
+And finally:
+
+S 
+compressed
+​
+ → 
+X
+^
+ 
+with the exact β state telling us:
+
+R=X 
+\*
+ − 
+X
+^
+ .
+So we don't need to invent symbolic regression. We need to build the ADG layer around it.
+
+An MVP could be surprisingly small
+I'd make:
+
+beta_engine/
+    encode()
+    decode()
+    trajectory()
+
+symbolic_engine/
+    discover()
+    simplify()
+    evaluate()
+    complexity()
+
+bridge/
+    state_to_target()
+    symbolic_approximation()
+    residual()
+
+analyzer/
+    compare_cost()
+Then our first experiment could literally be:
+
+state = beta.encode(data)
+
+candidates = symbolic.discover(
+    state,
+    operators=["+", "-", "*", "/", "sqrt", "log", "sin", "exp"]
+)
+
+for expression in candidates:
+    approximation = symbolic.evaluate(expression)
+    residual = state - approximation
+
+    score = (
+        symbolic.cost(expression)
+        + residual.cost()
+    )
+
+    print(expression, score)
+That's not a huge research system yet. It's an experimental harness.
+
+And then we can add the thing you just suggested:
+
+100 symbolic objects
+       ↓
+common subexpression detection
+       ↓
+algebraic combination
+       ↓
+factorization
+       ↓
+new symbolic objects
+       ↓
+repeat
+That second part is where it becomes genuinely interesting for us.
+
+The really nice thing
+Existing symbolic-regression systems already deal with the ugly part of searching enormous expression spaces. PySR, for example, uses evolutionary search and explicitly supports controlling operators, constraints, and complexity. 
+
+So we don't need to spend six months building:
+
+"What if I randomly combine sin, sqrt, +, *, etc.?"
+
+We can borrow the search engine and concentrate on the novel question:
+
+What happens when symbolic discovery is embedded inside a reversible latent-space engine and judged by representation cost + exact residual?
+
+That's a much better use of our effort.
+
+And eventually we could replace the off-the-shelf symbolic search with our own specialized engine if the experiments show that ordinary symbolic regression is looking in the wrong space.
+
+So no, I wouldn't consider the symbolic component a blocker at all. The first prototype could be quite achievable in Python. The hard part isn't making equations; it's figuring out what object the equations should be trying to represent and how to make their algebraic composition genuinely useful for the layered representation system.
+
+
+No i mean literaly take 10 expression try to collapse them thsts all and the engine determinstcly tries to do so and does it well
+
+Ah, yes. That is much simpler. I misunderstood the scope.
+
+You don't mean "build a symbolic regression AI." You mean:
+
+Give the engine 10 already-existing symbolic expressions and make it deterministically try to collapse them into fewer/lower-complexity expressions.
+
+That's very doable.
+
+The engine could essentially be an algebraic compression engine.
+
+For example, feed it:
+
+x 
+2
+ +2x
+3x 
+2
+ +6x
+7x 
+2
+ +14x
+and it recognizes:
+
+3x 
+2
+ +6x=3(x 
+2
+ +2x)
+7x 
+2
+ +14x=7(x 
+2
+ +2x)
+so the ten expressions can become something like:
+
+A=x 
+2
+ +2x
+{1A,3A,7A,…}
+The dictionary/object A is paid for once.
+
+That's the exact operation we're interested in.
+
+The deterministic engine could try a fixed sequence of transformations
+Something like:
+
+10 expressions
+      ↓
+canonicalize
+      ↓
+expand / factor
+      ↓
+collect common terms
+      ↓
+find common subexpressions
+      ↓
+introduce symbols A, B, C...
+      ↓
+combine expressions
+      ↓
+factor again
+      ↓
+repeat
+      ↓
+choose shortest exact representation
+No neural network required.
+
+No stochastic search required for the MVP.
+
+And because symbolic algebra systems already know how to do things like:
+
+x+x=2x
+x 
+2
+ +2x+1=(x+1) 
+2
+ 
+x−1
+x 
+2
+ −1
+​
+ =x+1
+etc., we can build the first version almost entirely out of existing deterministic symbolic operations.
+
+The interesting part we'd write ourselves is the compression layer:
+
+10 expressions→shared symbolic objects→shortest exact notation
+​
+ 
+And we can score every candidate by actual description length.
+
+So it doesn't matter if the algebraic result looks simpler. The engine asks:
+
+L(original 10 expressions)
+versus
+
+L(dictionary+references+residual).
+If the latter is smaller, that's an actual symbolic compression result.
+
+And this is a fantastic little standalone experiment for the framework because it has no β-engine dependency at all. We could then later feed the expressions generated by the β-space analyzer into exactly the same collapse engine.
+
+So the architecture becomes:
+
+discover expressions
+​
+ → 
+deterministic algebraic compressor
+​
+ 
+The second box is very achievable. It's basically a symbolic equivalent of looking for repeated byte tuples and turning them into reusable objects—except the equivalence isn't textual; it's algebraic.
+
+
